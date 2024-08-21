@@ -68,10 +68,9 @@ xx <- mclapply(myList, CCI_score_Cal, CCI_cell = cc, cancer_cell_types = cancer_
 
 ### Parameters
 
-- **`myList`**: A list of data frames containing cell information, including spatial coordinates and cell types.
-- **`cel.typ`**: A vector of unique cell types identified across datasets.
-- **`cancer_cells`**: A character vector specifying cancer cell types of interest.
-- **`cc`**: A vector specifying immune cell types for which CCI scores will be calculated.
+- ** `CCI_data`**: A data frame or matrix containing spatial coordinates of cells. The first two columns should be the x and y coordinates.
+- **`CCI_cell`**: A vector of cell type labels that will be calcualted for CCI score to the cells in `CCI_data`.
+- **`cancer_cell_types`**: A character vector specifying the names of cancer cell types in `CCI_cell`.
 - **`Nknn`**: Integer specifying the number of nearest neighbors to consider (default is 10).
 - **`nPermu`**: Integer specifying the number of permutations for the null distribution (default is 100).
 
