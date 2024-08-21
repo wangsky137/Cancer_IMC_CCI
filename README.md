@@ -49,10 +49,10 @@ cancer_cells <- c(
 # Define immune cell types of interest
 cell_type_of_interest <- c("CD8+T", "Treg", "CD8+GZMB+T", "CD8+PD1+T_Ex")
 
-# Calculate z-score for the first dataset
+# Calculate z-score for the first image
 z_score <- CCI_score_Cal(myList[[1]], cell_type_of_interest, cancer_cells)
 
-# Apply CCI calculation across all datasets in parallel
+# Apply CCI calculation across all image in the list in parallel
 CCI<-mclapply(myList,CCI_score_Cal,CCI_cell=cell_type_of_interest,cancer_cell_types=cancer_cells)
 df <- data.frame(matrix(unlist(CCI), nrow=length(CCI), byrow=T))
 colnames(df)<- names(CCI[[1]])
