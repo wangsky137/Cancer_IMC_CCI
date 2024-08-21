@@ -38,16 +38,6 @@ library(parallel)
 load("./example_data.rda")
 source("./CCI_Z_cal.R")
 
-# Identify unique cell types across all datasets
-cel.typ = NULL
-for(k in 1:length(myList)) {
-  cat("
-", k)
-  data = myList[[k]]
-  tmp = data$cel.typ
-  cel.typ = unique(c(cel.typ, tmp))
-}
-
 # Define cancer cell types
 cancer_cells <- c(
   "panCKmed", "Vimentin+EMT", "CD56+NE", "PD-L1+GZMB+", "Helios+", 
@@ -56,19 +46,19 @@ cancer_cells <- c(
   "Apoptosis"
 )
 
-# Define immune cell types
-cc <- c("CD8+T", "Treg", "CD8+GZMB+T", "CD8+PD1+T_Ex")
+# Define immune cell types of interest
+cell_type_of_interest <- c("CD8+T", "Treg", "CD8+GZMB+T", "CD8+PD1+T_Ex")
 
 # Calculate z-score for the first dataset
-z_score <- CCI_score_Cal(myList[[1]], cc, cancer_cells)
+z_score <- CCI_score_Cal(myList[[1]], cell_type_of_interest, cancer_cells)
 
 # Apply CCI calculation across all datasets in parallel
-xx <- mclapply(myList, CCI_score_Cal, CCI_cell = cc, cancer_cell_types = cancer_cells)
+xx <- mclapply(myList, CCI_score_Cal, CCI_cell = cell_type_of_interest, cancer_cell_types = cancer_cells)
 ```
 
 ### Parameters
 
-- ** `CCI_data`**: A data frame or matrix containing spatial coordinates of cells. The first two columns should be the x and y coordinates.
+- **`CCI_data`**: A data frame or matrix containing spatial coordinates of cells. The first two columns should be the x and y coordinates.
 - **`CCI_cell`**: A vector of cell type labels that will be calcualted for CCI score to the cells in `CCI_data`.
 - **`cancer_cell_types`**: A character vector specifying the names of cancer cell types in `CCI_cell`.
 - **`Nknn`**: Integer specifying the number of nearest neighbors to consider (default is 10).
@@ -76,7 +66,7 @@ xx <- mclapply(myList, CCI_score_Cal, CCI_cell = cc, cancer_cell_types = cancer_
 
 ## Output
 
-The function returns a matrix of z-scores, quantifying the interaction strength between each pair of cell types, with higher scores indicating stronger interactions.
+The function returns a vector of z-scores, quantifying the interaction strength between each pair of cell types, with higher scores indicating stronger interactions.
 
 ## Contributing
 
