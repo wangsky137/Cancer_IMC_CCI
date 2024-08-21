@@ -60,7 +60,7 @@ cancer_cells <- c(
 cc <- c("CD8+T", "Treg", "CD8+GZMB+T", "CD8+PD1+T_Ex")
 
 # Calculate z-score for the first dataset
-z_score <- CCI_score_Cal(myList[[1]], cel.typ, cancer_cells)
+z_score <- CCI_score_Cal(myList[[1]], cc, cancer_cells)
 
 # Apply CCI calculation across all datasets in parallel
 xx <- mclapply(myList, CCI_score_Cal, CCI_cell = cc, cancer_cell_types = cancer_cells)
