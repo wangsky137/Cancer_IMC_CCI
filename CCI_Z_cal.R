@@ -1,14 +1,41 @@
 
+#' Calculate CCI Score for Cell-Cell Interactions
+#'
+#' The `CCI_score_Cal` function calculates a Cell-Cell Interaction (CCI) score matrix, representing 
+#' the interaction strength between different cell types in a spatial context. The function uses 
+#' k-nearest neighbors (KNN) and permutation testing to generate a z-score matrix based on 
+#' observed and randomized cell type distributions.
+#'
+#' @param CCI_data A data frame or matrix containing spatial coordinates of cells. The first two columns should be the x and y coordinates.
+#' @param CCI_cell A vector of cell type labels that will be calcualted for CCI score to the cells in `CCI_data`.
+#' @param cancer_cell_types A character vector specifying the names of cancer cell types in `CCI_cell`.
+#' @param Nknn Integer specifying the number of nearest neighbors to consider (default is 10).
+#' @param nPermu Integer specifying the number of permutations for the null distribution (default is 100).
+#' 
+#' @return A matrix containing z-scores that quantify the interaction strength between each pair of cell types.
+#' 
+#' @details
+#' The function calculates cell-cell distances using Euclidean distance and counts the number of nearest neighbors 
+#' for each cell. A z-score is computed for each pair of cell types based on a permutation test, where non-cancer 
+#' cell types are randomly shuffled to generate a null distribution.
+#' 
+#'
+#' @export
 
-CCI_score_Cal<-function(CCI_data, outfile=NULL, cel.typ, cancer_cell_name,Nknn=10,nPermu=100) {
+
+
+CCI_score_Cal<-function(CCI_data, CCI_cell=NULL, cancer_cell_types=NULL,Nknn=10,nPermu=100) {
 
 set.seed(123)
 knn = Nknn
-cel.typ<- cel.typ
+cel.typ<- CCI_cell
 myImg= CCI_data
 
-
-  cat("\r",k)
+if (length(cel.typ)==0){
+  
+  cel.typ<- setdiff(data$cel.typ, cancer_cell_types)
+}
+  #cat("\r",k)
   data = myImg
   ## calculating cell cell distance 
   dis = dist(data[,1:2], method="euclidean", upper = TRUE)
@@ -48,7 +75,7 @@ myImg= CCI_data
   for(p in 1:pnn)
   {
     pm.cel.typ = data$cel.typ
-    se = which(pm.cel.typ!=cancer_cell_name)
+    se = which( ! pm.cel.typ %in% cancer_cell_types)
     pm.cel.typ[se] = sample(pm.cel.typ[se])
     
     for(i in 1:length(cel.typ))
@@ -76,7 +103,8 @@ myImg= CCI_data
   zscore = (obs.knn-pmu.avg)/pmu.std
   CCI.img = zscore
 
-save(CCI.img, file = outfile)
+  return (CCI.img)
+
 }
 
 
