@@ -101,9 +101,12 @@ if (length(cel.typ)==0){
     pmu.std = sqrt(pmu.var)
   }
   zscore = (obs.knn-pmu.avg)/pmu.std
-  CCI.img = zscore
-
-  return (CCI.img)
+ 
+  datax<-as.vector(t(zscore))
+  nn = nrow(zscore)
+  names(datax) = paste( rep(row.names(zscore), each=nn), rep(colnames(zscore), nn), sep="→")
+  
+  return (datax)
 
 }
 
