@@ -4,11 +4,11 @@
 
 This repository provides the `CCI_score_Cal` function, an R tool designed to calculate a Cell-Cell Interaction (CCI) score matrix. The function evaluates the interaction strength between different cell types in a spatial context, which is vital for understanding cellular interactions within the tumor microenvironment.
 
-The function uses k-nearest neighbors (KNN) and permutation testing to compute a z-score matrix based on observed and randomized cell type distributions. This approach is particularly valuable for identifying significant interactions between cancer and non-cancer cell types.
+The function uses finds cell neighborhood and permutation testing to compute a z-score matrix based on observed and randomized cell type distributions. This approach is particularly valuable for identifying significant interactions between cancer and non-cancer cell types.
 
 ## Features
 
-- **K-Nearest Neighbors (KNN):** Calculates distances between cells and identifies the nearest neighbors.
+- **Cell Neighborhood :** Calculates distances between cells and identifies the nearest neighbors.
 - **Permutation Testing:** Generates a null distribution by shuffling non-cancer cell types, allowing for robust z-score calculations.
 - **Z-Score Matrix:** Quantifies interaction strength between each pair of cell types.
 - **Parallel Processing:** Supports parallel processing for efficiency when working with large datasets.
